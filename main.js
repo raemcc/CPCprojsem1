@@ -25,7 +25,7 @@ let draggable = null;
 
 let currentColor = '#1475b5'; // default color
 let currentShape = 'cube'; //default shape
-// let currentlySelected = null;
+let currentlySelected = null;
 
 // Array storing all draggable shapes in the scene
 let shapes = [];
@@ -330,8 +330,7 @@ function clearAllShapes() {
 
     shapes.length = 0;  // clear shapes array
     draggable = null;
-
-    // currentlySelected = null;
+    currentlySelected = null;
     
     // clear all shapes from storage
     localStorage.removeItem(SHAPES_KEY);
@@ -506,7 +505,7 @@ function setupDragInput() {
       if (draggable.userData.status === 'done' && previousStatus !== 'done'){
         doneSynth.triggerAttackRelease('C5', '0.3');
       }
-
+      currentlySelected = null;
       //reset draggable &save
       draggable = null;
       saveShapesToStorage();
@@ -517,6 +516,10 @@ function setupDragInput() {
       (event.clientX / window.innerWidth) * 2 - 1,
       -(event.clientY / window.innerHeight) * 2 + 1
     );
+        draggable = dragManager.pick(clickMouse);
+    if (draggable){
+      currentlySelected = draggable;
+    }
   });
 
   // track mouse movement for dragging
